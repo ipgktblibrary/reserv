@@ -1,5 +1,4 @@
 "use client";
-import Input from "@/components/InputField";
 import Label from "@/components/Label";
 import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "@/icons";
 import Link from "next/link";
@@ -7,7 +6,7 @@ import React, { useState } from "react";
 
 import { useRouter } from "next/navigation";
 import { signIn } from "@/features/auth/auth.service";
-import { Button } from "@heroui/react";
+import { Button, Input } from "@heroui/react";
 
 export default function SignInForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -66,7 +65,12 @@ export default function SignInForm() {
           </p>
         )}
 
-        <form>
+        <form
+          onSubmit={async (e) => {
+            e.preventDefault();
+            await handleSubmit();
+          }}
+        >
           <div className="space-y-5">
             <div>
               <Label>
@@ -74,9 +78,11 @@ export default function SignInForm() {
               </Label>
 
               <Input
+                className="w-full"
                 type="email"
+                autoComplete="email"
                 placeholder="info@gmail.com"
-                defaultValue={email}
+                value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
@@ -88,9 +94,11 @@ export default function SignInForm() {
 
               <div className="relative">
                 <Input
+                  className="w-full"
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter your password"
-                  defaultValue={password}
+                  value={password}
+                  autoComplete="current-password"
                   onChange={(e) => setPassword(e.target.value)}
                 />
 
@@ -108,9 +116,9 @@ export default function SignInForm() {
             </div>
 
             <Button
+              type="submit"
               className="w-full"
               size="lg"
-              onClick={handleSubmit}
               isDisabled={loading}
             >
               {loading ? "Signing in..." : "Sign in"}
