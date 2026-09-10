@@ -21,9 +21,15 @@ import {
   UsersIcon,
   DocumentChartBarIcon,
   Cog6ToothIcon,
+  CalendarDaysIcon,
 } from "@heroicons/react/24/outline";
 
 const navItems: NavItem[] = [
+  {
+    icon: <CalendarDaysIcon className="size-5" />,
+    name: "Today Booking",
+    path: "/today-booking",
+  },
   {
     icon: <ChartBarIcon className="size-5" />,
     name: "Dashboard",

@@ -1,5 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import { useReservationReports } from "../reservation/useReservationReports";
+import {
+  useReservationReports,
+  useTodayReports,
+} from "../reservation/useReservationReports";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -23,7 +26,8 @@ const getCurrentMonth = () => {
 
 export function useDashboard() {
   const { data: reservations, loading } = useReservationReports();
-  
+  const { data: todayReservations, loading: todayLoading } = useTodayReports();
+
   const [month, setMonth] = useState<string>(getCurrentMonth());
   const [searchPhone, setSearchPhone] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -80,6 +84,9 @@ export function useDashboard() {
     paginatedReservations,
     summary,
     loading,
+
+    todayReservations,
+    todayLoading,
 
     month,
     setMonth,

@@ -102,7 +102,7 @@ export function DashboardClient() {
               {paginatedReservations.map((reservation) => (
                 <Table.Row key={reservation.id}>
                   <Table.Cell>
-                    {reservation.booker_name.toUpperCase()}
+                    {reservation.booker_name?.toUpperCase() ?? "Anonymous"}
                   </Table.Cell>
                   <Table.Cell>{reservation.booker_phone}</Table.Cell>
                   <Table.Cell>{reservation.room_name}</Table.Cell>
