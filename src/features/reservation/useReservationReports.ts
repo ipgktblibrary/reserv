@@ -74,7 +74,7 @@ export function useTodayReports() {
     try {
       const reservations = await getTodayBooking();
 
-      const grouped = new Map<string, TodayBookingData>();
+      const result: TodayBookingData[] = [];
 
       for (const reservation of reservations) {
         const room = Array.isArray(reservation.rooms)
@@ -95,42 +95,22 @@ export function useTodayReports() {
 
         if (!slot) continue;
 
-        const key = `${reservation.booker_id}-${reservation.room_id}-${reservation.booking_date}`;
-
-        const existing = grouped.get(key);
-
-        if (!existing) {
-          grouped.set(key, {
-            id: reservation.id,
-            booking_date: reservation.booking_date,
-            status: reservation.status,
-            room_id: reservation.room_id,
-            booker_id: reservation.booker_id,
-            capacity: reservation.capacity,
-            booker_name: booker?.name?.trim() ?? "",
-            booker_phone: profile?.phone_number ?? null,
-            room_name: room?.name ?? "",
-            start_time: slot.start_time,
-            end_time: slot.end_time,
-          });
-
-          continue;
-        }
-
-        // Earliest slot becomes the booking start.
-        if (slot.start_time < existing.start_time) {
-          existing.start_time = slot.start_time;
-        }
-
-        // Latest slot becomes the booking end.
-        if (slot.end_time > existing.end_time) {
-          existing.end_time = slot.end_time;
-        }
+        result.push({
+          id: reservation.id,
+          booking_date: reservation.booking_date,
+          status: reservation.status,
+          room_id: reservation.room_id,
+          booker_id: reservation.booker_id,
+          capacity: reservation.capacity,
+          booker_name: booker?.name?.trim() ?? "",
+          booker_phone: profile?.phone_number ?? null,
+          room_name: room?.name ?? "",
+          start_time: slot.start_time,
+          end_time: slot.end_time,
+        });
       }
 
-      const result = Array.from(grouped.values()).sort((a, b) =>
-        a.start_time.localeCompare(b.start_time),
-      );
+      result.sort((a, b) => a.start_time.localeCompare(b.start_time));
 
       setData(result);
     } finally {
