@@ -51,6 +51,7 @@ export function useDashboard() {
 
         return matchesMonth && matchesPhone;
       })
+
       .sort((a, b) => {
         const dateCompare =
           new Date(b.booking_date).getTime() -
