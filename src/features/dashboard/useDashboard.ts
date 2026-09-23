@@ -1,3 +1,5 @@
+import type { SortDescriptor } from "@heroui/react";
+
 import { useEffect, useMemo, useState } from "react";
 import {
   useReservationReports,
@@ -32,16 +34,45 @@ export function useDashboard() {
   const [searchPhone, setSearchPhone] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
+  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
+    column: "booking_date",
+    direction: "descending",
+  });
+
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setCurrentPage(1);
   }, [month, searchPhone]);
 
+  // const filtered = useMemo(() => {
+  //   if (!reservations) return [];
+
+  //   return reservations
+
+  //     .filter((r) => {
+  //       const matchesMonth = r.booking_date?.startsWith(month);
+
+  //       const matchesPhone =
+  //         searchPhone.trim() === "" ||
+  //         (r.booker_phone ?? "").includes(searchPhone.trim());
+
+  //       return matchesMonth && matchesPhone;
+  //     })
+
+  //     .sort((a, b) => {
+  //       const dateCompare =
+  //         new Date(b.booking_date).getTime() -
+  //         new Date(a.booking_date).getTime();
+
+  //       if (dateCompare !== 0) return dateCompare;
+  //       return getMinutes(b.time_slot ?? "") - getMinutes(a.time_slot ?? "");
+  //     });
+  // }, [reservations, month, searchPhone]);
+
   const filtered = useMemo(() => {
     if (!reservations) return [];
 
     return reservations
-
       .filter((r) => {
         const matchesMonth = r.booking_date?.startsWith(month);
 
@@ -51,16 +82,15 @@ export function useDashboard() {
 
         return matchesMonth && matchesPhone;
       })
-
       .sort((a, b) => {
-        const dateCompare =
-          new Date(b.booking_date).getTime() -
-          new Date(a.booking_date).getTime();
+        const first = new Date(a.booking_date).getTime();
+        const second = new Date(b.booking_date).getTime();
 
-        if (dateCompare !== 0) return dateCompare;
-        return getMinutes(b.time_slot ?? "") - getMinutes(a.time_slot ?? "");
+        const cmp = first - second;
+
+        return sortDescriptor.direction === "descending" ? -cmp : cmp;
       });
-  }, [reservations, month, searchPhone]);
+  }, [reservations, month, searchPhone, sortDescriptor]);
 
   /* SUMMARY */
   const summary = useMemo(() => {
@@ -99,5 +129,8 @@ export function useDashboard() {
     setCurrentPage,
 
     filtered,
+
+    sortDescriptor,
+    setSortDescriptor,
   };
 }

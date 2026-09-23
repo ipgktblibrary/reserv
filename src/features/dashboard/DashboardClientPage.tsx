@@ -22,6 +22,9 @@ export function DashboardClient() {
     setCurrentPage,
 
     totalPages,
+
+    sortDescriptor,
+    setSortDescriptor,
   } = useDashboard();
 
   return (
@@ -87,12 +90,26 @@ export function DashboardClient() {
 
       <Table>
         <Table.ScrollContainer>
-          <Table.Content aria-label="Team members" className="min-w-150">
+          <Table.Content
+            aria-label="Team members"
+
+            className="min-w-150"
+
+            sortDescriptor={sortDescriptor}
+
+            onSortChange={setSortDescriptor}
+          >
             <Table.Header>
               <Table.Column isRowHeader>Name</Table.Column>
               <Table.Column>Phone Number</Table.Column>
               <Table.Column>Room</Table.Column>
-              <Table.Column>Date</Table.Column>
+              <Table.Column allowsSorting id="booking_date">
+                {({ sortDirection }) => (
+                  <Table.SortableColumnHeader sortDirection={sortDirection}>
+                    Date
+                  </Table.SortableColumnHeader>
+                )}
+              </Table.Column>
               <Table.Column>Status</Table.Column>
               <Table.Column>Participants</Table.Column>
               <Table.Column>Time slots</Table.Column>
