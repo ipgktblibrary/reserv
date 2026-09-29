@@ -9,6 +9,10 @@ import {
 } from "@heroicons/react/24/outline";
 
 import { useTodayReports } from "@/features/reservation/useReservationReports";
+import { FaWhatsapp } from "react-icons/fa";
+import Link from "next/link";
+
+const WHATSAPP_LINK = "https://wa.me/";
 
 export function TodayBooking() {
   const { data, loading, formatTime } = useTodayReports();
@@ -79,7 +83,7 @@ export function TodayBooking() {
                 <Accordion.Trigger className="w-full px-4 py-4 sm:px-5 sm:py-5">
                   <div className="flex w-full min-w-0 items-center gap-4 sm:gap-6">
                     {/* Time */}
-                    <div className="flex w-[220px] shrink-0 items-center gap-3 rounded-xl bg-primary/10 px-4 py-3 text-primary">
+                    <div className="flex w-55 shrink-0 items-center gap-3 rounded-xl bg-primary/10 px-4 py-3 text-primary">
                       <ClockIcon className="size-5 shrink-0" />
 
                       <div className="flex items-center gap-2 whitespace-nowrap">
@@ -148,6 +152,25 @@ export function TodayBooking() {
                           <span className="text-sm font-medium">
                             {booking.booker_phone ?? "—"}
                           </span>
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <p className="text-xs font-medium uppercase tracking-wider text-default-400">
+                          Whatsapp
+                        </p>
+
+                        <div className="flex items-center gap-2">
+                          <FaWhatsapp />
+
+                          <Link
+                            href={`https://wa.me/${booking.booker_phone?.replace(/^0/, "60")}`}
+                            target="_blank"
+                          >
+                            <span className="text-sm font-medium">
+                              {booking.booker_phone ?? "—"}
+                            </span>
+                          </Link>
                         </div>
                       </div>
 
