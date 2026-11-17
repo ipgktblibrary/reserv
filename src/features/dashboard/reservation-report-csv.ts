@@ -14,12 +14,14 @@ export type ReportsData = {
   booker_name: string;
   booker_phone: string;
   time_slot: string;
+  user_role: "teacher" | "student" | "admin";
 };
 
 export function exportReservationReportCSV(rows: ReportsData[]) {
   const header = [
     "ID",
     "Nama",
+    "Jenis Pengguna",
     "No.Telefon",
     "Tarikh",
     "Bilik",
@@ -31,6 +33,13 @@ export function exportReservationReportCSV(rows: ReportsData[]) {
     return [
       escape(r.id),
       escape(r.booker_name.toUpperCase()),
+      escape(
+        r.user_role === "teacher"
+          ? "Pensyarah"
+          : r.user_role === "student"
+            ? "Pelajar"
+            : "Admin",
+      ),
       escape(r.booker_phone),
       escape(r.booking_date),
       escape(r.room_name),

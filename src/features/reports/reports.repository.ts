@@ -33,7 +33,8 @@ export async function getTodayReports() {
       bookers (
         name,
         profiles (
-          phone_number
+          phone_number,
+          role
         )
       ),
       room_time_slots (

@@ -42,6 +42,7 @@ export type TodayBookingData = {
   room_name: string;
   start_time: string;
   end_time: string;
+  user_role: "teacher" | "student" | "admin";
 };
 
 function formatTime(time: string) {
@@ -94,6 +95,7 @@ export function useTodayReports() {
           capacity: reservation.capacity,
           booker_name: booker?.name?.trim() ?? "",
           booker_phone: profile?.phone_number ?? null,
+          user_role: profile?.role ?? "admin",
           room_name: room?.name ?? "",
           start_time: slot.start_time,
           end_time: slot.end_time,
